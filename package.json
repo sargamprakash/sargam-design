@@ -1,0 +1,42 @@
+{
+  "name": "sargam-design",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "assets": "node scripts/generate-brand-assets.mjs",
+    "prebuild": "npm run assets && node scripts/validate-project-assets.mjs",
+    "build": "next build",
+    "preview": "http-server out -a 127.0.0.1 -c-1 --no-dotfiles",
+    "prepare:vercel": "node scripts/prepare-vercel-output.mjs",
+    "start": "npm run preview",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "pretest": "tsx scripts/render-test-fixtures.ts",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.4",
+    "fontkit": "2.0.4",
+    "http-server": "14.1.1",
+    "sharp": "0.35.4",
+    "tsx": "4.23.13",
+    "wawoff2": "2.0.1",
+    "typescript": "^5"
+  }
+}
