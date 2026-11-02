@@ -11,33 +11,33 @@ private data storage, offline downloads, or installation prompts.
 
 ## How this site is organised
 
-sargam.design is **one website that holds many small projects**. Each small
-project gets its own folder. Bigger or private projects get their own repo.
+sargam.design is **one website made of separate projects**. This repo is only the **main
+page, the theme and the setup**. Every project has its **own repo and its own subdomain**.
 
 ```text
-sargam-design/
-├── src/app/page.tsx          the homepage (what you see at sargam.design)
+sargam-design/                this repo: main page, theme, setup (public)
+├── src/app/page.tsx          the main page (what you see at sargam.design)
 ├── src/app/about/            About page: planned, folder only, not live
-├── src/app/travel-planner/   Travel planner: planned, folder only, not live
-├── src/lib/projects.ts       the list of projects shown on the homepage
-└── public/                   images and icons
+├── src/lib/projects.ts       the list of projects shown on the main page
+├── public/                   images and icons (brand, project icons)
+└── docs/                     ECOSYSTEM.md, NEW_PROJECT.md, templates/
 ```
 
-A folder under `src/app/` becomes a web address. `src/app/about/` shows at
-`sargam.design/about/`. A folder is only a live page once it contains a
-`page.tsx` file (that file does the job `index.html` does on a plain website).
-The two planned folders have only a README, so nothing is published for them.
+A folder under `src/app/` becomes a web address. `src/app/about/` would show at
+`sargam.design/about/`, but only once it contains a `page.tsx` file (that file does the job
+`index.html` does on a plain website). Today it has only a README, so nothing is published.
 
-| Project | Where it lives | Address |
+| Site | Repo | Address |
 | --- | --- | --- |
-| Homepage | This repo, `src/app/page.tsx` | sargam.design |
-| About | This repo, `src/app/about/` (planned) | sargam.design/about/ |
-| Travel planner | This repo, `src/app/travel-planner/` (planned) | sargam.design/travel-planner/ |
-| Health reports | Separate **private** repo `health-reports` | health.sargam.design |
+| Main page, theme, setup | `sargam-design` (public, this repo) | sargam.design |
+| Health reports | `health-reports` (**private**) | health.sargam.design |
 
-Which one should a new project be? See [CONTRIBUTING.md](CONTRIBUTING.md):
-a small page or tool is a new folder here; anything with a backend, private
-data, or big plans gets its own repo and subdomain.
+A project is **never** a folder here. It gets its own repo; this repo only links to it
+through `publishedProjects` in `src/lib/projects.ts`. See [CONTRIBUTING.md](CONTRIBUTING.md),
+the map in [docs/ECOSYSTEM.md](docs/ECOSYSTEM.md), and the playbook in
+[docs/NEW_PROJECT.md](docs/NEW_PROJECT.md).
+
+**Pushing to `main` updates the live site automatically.** Other branches get a preview link.
 
 This repo is **public**. Never commit secrets, `.env` files, or real health or
 family data. The `.gitignore` blocks PDFs, CSVs, report-style JSON and `.env`
@@ -78,7 +78,9 @@ image. Manrope's license ships in `public/licenses/Manrope-OFL.txt`.
 
 ## Add a real project
 
-Edit `publishedProjects` in `src/lib/projects.ts` only after the public
+A project lives in **its own repo** at its own subdomain; see
+[docs/NEW_PROJECT.md](docs/NEW_PROJECT.md). This repo only links to it. Edit
+`publishedProjects` in `src/lib/projects.ts` only after the project's public
 destination actually works. The array order is the display order.
 
 | Field | Purpose |
@@ -143,8 +145,28 @@ It saves screenshots under the ignored `test-results/` directory.
 
 ## Vercel and the GoDaddy domain
 
-The intended setup is Vercel for website hosting while GoDaddy continues to
-register and manage `sargam.design`. No domain transfer is needed.
+Vercel hosts the site. GoDaddy registers `sargam.design` and hosts its DNS, so no domain
+transfer is needed. `sargam.design` and `www.sargam.design` are attached to the Vercel project
+`sargam-design` (team `sargam8`), and the DNS records at GoDaddy point to Vercel.
+
+### How it goes live (the normal way)
+
+This repo is connected to that Vercel project through GitHub.
+
+- Push to **any branch**: Vercel builds a **preview** link. Nothing live changes.
+- Push or merge to **`main`**: Vercel builds the static export (`npm run build`) and publishes
+  https://sargam.design by itself, usually within a minute or two.
+
+So **`main` is the live site**. Do not deploy by hand. To undo a bad release, promote the
+previous deployment in the Vercel dashboard (or `vercel rollback <deployment-url> --scope
+sargam8`) and fix it on a branch. Never change DNS without the owner's approval.
+
+The full picture is in [docs/ECOSYSTEM.md](docs/ECOSYSTEM.md).
+
+### Fallback only: prebuilt deployment by hand
+
+Before GitHub was connected, the site was uploaded by hand. Use this only if the GitHub route
+is unavailable and the owner asks for it.
 
 If organization policy blocks package or deployment traffic, keep that policy
 in place and coordinate an approved route with IT. The existing static export
@@ -176,11 +198,9 @@ blocked packages. A prebuilt upload needs no npm installation on Vercel.
    GoDaddy. Preserve nameservers and unrelated email/verification records.
 6. Redirect `www` to `https://sargam.design` and confirm HTTPS, assets, and 404s.
 
-The source lives in the public GitHub repo `sargamprakash/sargam-design`. The
-live site is currently deployed by hand with the prebuilt route below, not by
-a GitHub connection. Do not connect additional accounts, change DNS, or buy a
-plan without approval. Passwords, MFA codes, and hosting credentials must not
-be pasted into source or chat.
+The source lives in the public GitHub repo `sargamprakash/sargam-design`. Do not connect
+additional accounts, change DNS, or buy a plan without approval. Passwords, MFA codes, and
+hosting credentials must not be pasted into source or chat.
 
 ## Move to another host
 
