@@ -9,6 +9,40 @@ light/true-black dark appearance.
 This is only the homepage. It does not implement the travel tool, passwords,
 private data storage, offline downloads, or installation prompts.
 
+## How this site is organised
+
+sargam.design is **one website that holds many small projects**. Each small
+project gets its own folder. Bigger or private projects get their own repo.
+
+```text
+sargam-design/
+├── src/app/page.tsx          the homepage (what you see at sargam.design)
+├── src/app/about/            About page: planned, folder only, not live
+├── src/app/travel-planner/   Travel planner: planned, folder only, not live
+├── src/lib/projects.ts       the list of projects shown on the homepage
+└── public/                   images and icons
+```
+
+A folder under `src/app/` becomes a web address. `src/app/about/` shows at
+`sargam.design/about/`. A folder is only a live page once it contains a
+`page.tsx` file (that file does the job `index.html` does on a plain website).
+The two planned folders have only a README, so nothing is published for them.
+
+| Project | Where it lives | Address |
+| --- | --- | --- |
+| Homepage | This repo, `src/app/page.tsx` | sargam.design |
+| About | This repo, `src/app/about/` (planned) | sargam.design/about/ |
+| Travel planner | This repo, `src/app/travel-planner/` (planned) | sargam.design/travel-planner/ |
+| Health reports | Separate **private** repo `health-reports` | health.sargam.design |
+
+Which one should a new project be? See [CONTRIBUTING.md](CONTRIBUTING.md):
+a small page or tool is a new folder here; anything with a backend, private
+data, or big plans gets its own repo and subdomain.
+
+This repo is **public**. Never commit secrets, `.env` files, or real health or
+family data. The `.gitignore` blocks PDFs, CSVs, report-style JSON and `.env`
+files as a safety net.
+
 ## Develop
 
 Use Node 24 and npm. Run commands from this directory, not the parent workspace.
@@ -142,10 +176,11 @@ blocked packages. A prebuilt upload needs no npm installation on Vercel.
    GoDaddy. Preserve nameservers and unrelated email/verification records.
 6. Redirect `www` to `https://sargam.design` and confirm HTTPS, assets, and 404s.
 
-A private Git repository is optional for automated deployment. Do not publish
-one, connect additional accounts, change DNS, or buy a plan without approval.
-Passwords, MFA codes, and hosting credentials must not be pasted into source
-or chat.
+The source lives in the public GitHub repo `sargamprakash/sargam-design`. The
+live site is currently deployed by hand with the prebuilt route below, not by
+a GitHub connection. Do not connect additional accounts, change DNS, or buy a
+plan without approval. Passwords, MFA codes, and hosting credentials must not
+be pasted into source or chat.
 
 ## Move to another host
 
