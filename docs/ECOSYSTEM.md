@@ -45,7 +45,9 @@ main        --push-->  Vercel builds PRODUCTION (live at the project's address)
   `vercel rollback <good-deployment-url> --scope sargam8`). Then fix forward on a branch.
 - Check a preview with `vercel inspect <preview-url>` and, from inside the project folder,
   `vercel curl / --deployment <preview-url>` (previews can be access-protected, so a plain
-  `curl` may return 401).
+  `curl` may return 401). The first `vercel curl` for a project creates a deployment
+  protection-bypass token in that Vercel project's settings. It is not printed; never paste
+  it into chat, source or docs.
 - Environment variables and secrets live in Vercel's settings, never in GitHub. Private
   projects set secrets for **Production only**, so branch previews can never reach real data.
 
